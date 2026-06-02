@@ -35,3 +35,6 @@ htmlcov/
 *.dump
 *.backup
 *.sql.bak
+
+data/raw/
+data/processed/
