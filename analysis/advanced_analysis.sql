@@ -3,7 +3,7 @@
 
 
 
-// Batter Ranking based on their imapct at each position they played
+-- Batter Ranking based on their imapct at each position they played
 
 
 

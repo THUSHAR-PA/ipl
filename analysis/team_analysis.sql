@@ -1,4 +1,4 @@
-//Team Wins
+--Team Wins
 
 SELECT
     winner,
@@ -7,7 +7,7 @@ FROM matches
 GROUP BY winner
 ORDER BY wins DESC;
 
-//RCB win percentages
+--RCB win percentages
 
 SELECT
     ROUND(
@@ -23,7 +23,7 @@ FROM matches
 WHERE team1 = 'Royal Challengers Bengaluru'
    OR team2 = 'Royal Challengers Bengaluru';
 
-//Veneue usage
+--Venue usage
 
 SELECT
     venue,

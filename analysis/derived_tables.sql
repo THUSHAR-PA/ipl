@@ -103,7 +103,7 @@ CREATE TABLE batter_position_stats (
     boundary_percentage NUMERIC(6,2)
 );
 
---insert into batting position stats table
+--Insert into batting position stats table
 
 INSERT INTO batter_position_stats
 

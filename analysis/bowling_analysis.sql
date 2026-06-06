@@ -1,4 +1,4 @@
-//PURPLE CAP
+--PURPLE CAP
 
 SELECT
     bowler,
@@ -13,7 +13,7 @@ WHERE dismissal_kind NOT IN (
 GROUP BY bowler
 ORDER BY wickets DESC;
 
-// Lowest economy rate 
+-- Lowest economy rate 
 SELECT
     bowler,
     ROUND(
@@ -25,7 +25,7 @@ GROUP BY bowler
 HAVING COUNT(*) > 30
 ORDER BY economy;
 
-//Lowest economy rate in death overs
+--Lowest economy rate in death overs
 
 SELECT
     bowler,
@@ -39,7 +39,7 @@ GROUP BY bowler
 HAVING COUNT(*) > 30
 ORDER BY economy;
 
-//Dot Ball percentages
+--Dot Ball percentages
 
 SELECT
     bowler,

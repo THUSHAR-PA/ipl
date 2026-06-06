@@ -2,23 +2,23 @@ SELECT COUNT(*) FROM matches;
 SELECT COUNT(*) FROM deliveries;
 SELECT COUNT(*) FROM dismissals;
 
-//Distinc matches
+--Distinct matches
 
 SELECT DISTINCT team1
 FROM matches;
 
-//Distin dismissal kinds
+--Distinct dismissal kinds
 
 SELECT DISTINCT dismissal_kind
 FROM dismissals;
 
-//Nulll check
+--Null check
 
 SELECT *
 FROM matches
 WHERE winner IS NULL;
 
-// Sanity check for wicket type
+-- Sanity check for wicket type
 
 SELECT
     dismissal_kind,

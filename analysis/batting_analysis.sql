@@ -1,4 +1,4 @@
-//ORANGE CAP
+--ORANGE CAP
 
 SELECT
     batter,
@@ -7,7 +7,7 @@ FROM deliveries
 GROUP BY batter
 ORDER BY runs DESC;
 
-//Most Sixes
+--Most Sixes
 
 SELECT
     batter,
@@ -17,7 +17,7 @@ WHERE batter_runs = 6
 GROUP BY batter
 ORDER BY sixes DESC;
 
-//MOST FOURS
+--MOST FOURS
 
 SELECT
     batter,
@@ -28,8 +28,7 @@ GROUP BY batter
 ORDER BY fours DESC;
 
 
-
-//Batter_with highest strike rate_in powerplay who faced atleast 100 balls
+--Batter_with highest strike rate_in powerplay who faced atleast 100 balls
  
  SELECT
     batter,
@@ -43,7 +42,7 @@ GROUP BY batter
 HAVING COUNT(*) > 100
 ORDER BY strike_rate DESC;
 
-//Death over strike rate min 20 balls faced
+--Death over strike rate min 20 balls faced
 
 SELECT
     batter,
