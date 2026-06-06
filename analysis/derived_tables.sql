@@ -102,3 +102,61 @@ CREATE TABLE batter_position_stats (
     sixes INTEGER,
     boundary_percentage NUMERIC(6,2)
 );
+
+--insert into batting position stats table
+
+INSERT INTO batter_position_stats
+
+SELECT
+
+    CASE
+        WHEN bp.batting_position IN (1, 2)
+            THEN 'Opener'
+
+        ELSE bp.batting_position::TEXT
+    END AS batting_role,
+
+    d.batter,
+
+    d.batting_team,
+
+    COUNT(DISTINCT d.match_id) AS matches,
+
+    SUM(d.batter_runs) AS runs,
+
+    COUNT(*) AS balls,
+
+    ROUND(
+        SUM(d.batter_runs) * 100.0 / COUNT(*),
+        2
+    ) AS strike_rate,
+
+    COUNT(*) FILTER (
+        WHERE d.batter_runs = 4
+    ) AS fours,
+
+    COUNT(*) FILTER (
+        WHERE d.batter_runs = 6
+    ) AS sixes,
+
+    ROUND(
+        COUNT(*) FILTER (
+            WHERE d.batter_runs IN (4, 6)
+        ) * 100.0 / COUNT(*),
+        2
+    ) AS boundary_percentage
+
+FROM deliveries d
+
+JOIN batting_positions bp
+    ON d.match_id = bp.match_id
+   AND d.inning_no = bp.inning_no
+   AND d.batter = bp.batter
+
+WHERE d.inning_no IN (1, 2)
+
+GROUP BY
+    batting_role,
+    d.batter,
+    d.batting_team;
+
