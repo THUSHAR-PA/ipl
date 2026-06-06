@@ -39,6 +39,23 @@ Ball-by-ball IPL data sourced from:
 * [Cricsheet](https://cricsheet.org/?utm_source=chatgpt.com)
 
 ---
+# Data Cleaning & Transformation
+
+The raw IPL JSON files were transformed into analytics-ready PostgreSQL tables using a custom Python ETL pipeline.
+
+Cleaning and transformation steps included:
+
+- Filtering only IPL 2026 matches
+- Generating ball numbers and delivery sequence
+- Creating phase classifications:
+  - Powerplay
+  - Middle Overs
+  - Death Overs
+- Handling wicket information and dismissal types
+- Reconstructing batting positions using striker/non-striker logic
+- Excluding super over innings from analysis
+- Creating derived analytical tables for reusable metrics
+---
 
 # Project Structure
 
