@@ -109,15 +109,15 @@ Example:
 
 # Key Features
 
-✔ Ball-by-ball IPL analytics
-✔ Batting role reconstruction
-✔ Powerplay, Middle, and Death over analysis
-✔ Strike rate analysis
-✔ Boundary percentage analysis
-✔ Bowling economy analytics
-✔ Dot ball percentage analysis
-✔ Team win percentage analysis
-✔ Advanced batting position analytics
+* Ball-by-ball IPL analytics
+* Batting role reconstruction
+* Powerplay, Middle, and Death over analysis
+* Strike rate analysis
+* Boundary percentage analysis
+* Bowling economy analytics
+* Dot ball percentage analysis
+* Team win percentage analysis
+* Advanced batting position analytics
 
 ---
 
