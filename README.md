@@ -1,43 +1,48 @@
 # IPL 2026 Analytics Engine
 
-Advanced IPL analytics project using PostgreSQL, Python ETL pipelines, and ball-by-ball cricket data.
-
-IPL 2026 Analytics Engine
-
 A PostgreSQL-based cricket analytics project built using IPL 2026 ball-by-ball data.
 This project focuses on advanced batting, bowling, and team analytics using structured SQL analysis and Python ETL pipelines.
 
-Project Overview
+---
+
+# Project Overview
 
 This project processes raw IPL JSON match data and converts it into an analytics-ready PostgreSQL database.
 
 The project includes:
 
-Ball-by-ball delivery analysis
-Batting position reconstruction
-Phase-wise batting insights
-Bowling analytics
-Team performance analysis
-Advanced positional impact metrics
+* Ball-by-ball delivery analysis
+* Batting position reconstruction
+* Phase-wise batting insights
+* Bowling analytics
+* Team performance analysis
+* Advanced positional impact metrics
 
 The goal was to move beyond beginner cricket statistics and build reusable analytical datasets similar to real sports analytics systems.
 
+---
 
-Tech Stack
-Python
-PostgreSQL
-SQLAlchemy
-SQL
-JSON ETL Pipeline
-Dataset Source
+# Tech Stack
+
+* Python
+* PostgreSQL
+* SQLAlchemy
+* SQL
+* JSON ETL Pipeline
+
+---
+
+# Dataset Source
 
 Ball-by-ball IPL data sourced from:
 
-Cricsheet:https://cricsheet.org/?utm_source=chatgpt.com
+* [Cricsheet](https://cricsheet.org/?utm_source=chatgpt.com)
 
-Project Structure
+---
 
+# Project Structure
 
+```txt
 ipl_analytics/
 │
 ├── analysis/
@@ -48,65 +53,61 @@ ipl_analytics/
 │   ├── derived_tables.sql
 │   └── validation_queries.sql
 │
-|__   api/
-|
-|__ dashboard/
-|
 ├── data/
 │   └── raw/
 │
-|
-|__database/
-|
 ├── etl/
 │   └── load_deliveries.py
 │
-|__notebooks
-|
-|__scraper
-|
-|
 ├── README.md
 ├── requirements.txt
 └── .env
+```
 
+---
 
-Database Schema
-Core Tables
-matches
+# Database Schema
+
+## Core Tables
+
+### `matches`
 
 Stores match-level information.
 
-deliveries
+### `deliveries`
 
 Stores ball-by-ball IPL data.
 
-dismissals
+### `dismissals`
 
 Stores wicket and dismissal details.
 
-Derived Analytical Tables
-batting_positions
+---
+
+## Derived Analytical Tables
+
+### `batting_positions`
 
 Reconstructs batting order using:
 
-striker
-non-striker
-first ball logic
-batter_position_stats
+* striker
+* non-striker
+* first ball logic
+
+### `batter_position_stats`
 
 Stores aggregated batter statistics based on batting roles.
 
 Example:
 
-Opener
-No.3
-No.4
-Finisher roles
+* Opener
+* No.3
+* No.4
+* Finisher roles
 
+---
 
-
-Key Features
+# Key Features
 
 ✔ Ball-by-ball IPL analytics
 ✔ Batting role reconstruction
@@ -118,60 +119,73 @@ Key Features
 ✔ Team win percentage analysis
 ✔ Advanced batting position analytics
 
+---
 
+# Advanced Analytics Implemented
 
-
-Advanced Analytics Implemented
-Best Openers Analysis
+## Best Openers Analysis
 
 Compares all opening batters based on:
 
-runs
-strike rate
-boundary percentage
-Positional Batting Analysis
+* runs
+* strike rate
+* boundary percentage
+
+## Positional Batting Analysis
 
 Tracks batter performance at:
 
-No.3
-No.4
-Finisher positions
-Phase-Based Batting Analysis
+* No.3
+* No.4
+* Finisher positions
+
+## Phase-Based Batting Analysis
 
 Analyzes:
 
-Powerplay scoring
-Death over strike rates
-Aggressive batters
-Bowling Analysis
+* Powerplay scoring
+* Death over strike rates
+* Aggressive batters
+
+## Bowling Analysis
 
 Includes:
 
-Purple Cap leaderboard
-Economy rate
-Death over economy
-Dot ball percentage
+* Purple Cap leaderboard
+* Economy rate
+* Death over economy
+* Dot ball percentage
 
+---
 
-Example Insights
-V Suryavanshi emerged as the highest scoring opener.
-Virat Kohli maintained strong consistency as an opener.
-Rajat Patidar dominated the No.4 batting role.
-Heinrich Klaasen showed elite middle-order impact.
-Several finishers achieved strike rates above 180 in death overs.
+# Example Insights
 
+* V Suryavanshi emerged as the highest scoring opener.
+* Virat Kohli maintained strong consistency as an opener.
+* Rajat Patidar dominated the No.4 batting role.
+* Heinrich Klaasen showed elite middle-order impact.
+* Several finishers achieved strike rates above 180 in death overs.
 
-Example Queries
-Orange Cap
+---
+
+# Example Queries
+
+## Orange Cap
+
+```sql
 SELECT
     batter,
     SUM(batter_runs) AS runs
 FROM deliveries
 GROUP BY batter
 ORDER BY runs DESC;
+```
 
-Best Death Over Batter
+---
 
+## Best Death Over Batter
+
+```sql
 SELECT
     batter,
     ROUND(
@@ -183,53 +197,78 @@ WHERE phase = 'Death'
 GROUP BY batter
 HAVING COUNT(*) > 20
 ORDER BY strike_rate DESC;
+```
 
-ETL Pipeline
+---
+
+# ETL Pipeline
 
 The ETL pipeline:
 
-Reads raw IPL JSON files
-Extracts innings and delivery data
-Generates:
-ball number
-delivery sequence
-match phases
-Loads cleaned data into PostgreSQL
+1. Reads raw IPL JSON files
+2. Extracts innings and delivery data
+3. Generates:
 
+   * ball number
+   * delivery sequence
+   * match phases
+4. Loads cleaned data into PostgreSQL
 
+---
 
-Future Improvements
-Data visualization dashboard
-Partnership analysis
-Match impact metrics
-Win probability modeling
-Player consistency metrics
-Streamlit dashboard integration
+# Future Improvements
 
-How To Run
-Clone Repository
+* Data visualization dashboard
+* Partnership analysis
+* Match impact metrics
+* Win probability modeling
+* Player consistency metrics
+* Streamlit dashboard integration
+
+---
+
+# How To Run
+
+## Clone Repository
+
+```bash
 git clone <https://github.com/THUSHAR-PA/ipl>
+```
 
-Install Requirements
+---
+
+## Install Requirements
+
+```bash
 pip install -r requirements.txt
+```
 
+---
 
+## Configure Environment Variables
 
-Configure Environment Variables
+Create `.env`
 
-Create .env
-
+```env
 DB_USER=your_user
 DB_PASSWORD=your_password
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=ipl
+```
 
+---
 
-Run ETL
+## Run ETL
+
+```bash
 python etl/load_deliveries.py
+```
 
+---
 
-Author
+# Author
 
 Thushar P A
+
+---
