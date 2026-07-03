@@ -139,7 +139,24 @@ Example:
 ---
 
 # Advanced Analytics Implemented
+## Powerplay Advantage vs Match Outcome
 
+A custom team-level analysis measuring whether winning the Powerplay
+translates into winning the match.
+
+Powerplay dominance is determined using:
+
+- Higher Powerplay runs
+- Fewer wickets lost (tie-breaker)
+
+### Finding
+
+Teams dominating the Powerplay won:
+
+**51 of 72 completed matches (70.83%)**
+
+This insight is derived using the reusable `team_phase_stats`
+analytical table.
 ## Best Openers Analysis
 
 Compares all opening batters based on:

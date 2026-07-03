@@ -160,3 +160,30 @@ GROUP BY
     d.batter,
     d.batting_team;
 
+
+----------------------------------------------------------
+-- TEAM PHASE STATS
+----------------------------------------------------------
+
+CREATE TABLE team_phase_stats (
+
+    match_id TEXT,
+
+    batting_team TEXT,
+
+    phase TEXT,
+
+    runs INTEGER,
+
+    wickets_lost INTEGER,
+
+    balls INTEGER,
+
+    run_rate NUMERIC(5,2),
+
+    boundary_percentage NUMERIC(5,2),
+
+    dot_balls INTEGER,
+
+    boundaries INTEGER
+);
