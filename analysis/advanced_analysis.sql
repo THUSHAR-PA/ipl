@@ -233,3 +233,69 @@ SELECT
     ) AS success_percentage
 
 FROM results;
+
+
+/*=========================================================
+Insight 2 : Death Overs Scoring Multiplier
+=========================================================*/
+
+/*
+Business Question:
+Which IPL teams accelerate their scoring the most
+during the death overs?
+
+Definition:
+Death Overs Scoring Multiplier =
+Average Death Overs Run Rate
+/
+Average Middle Overs Run Rate
+
+Finding:
+Lucknow Super Giants recorded the highest
+Death Overs Scoring Multiplier
+with a multiplier of 1.33x.
+*/
+
+WITH phase_run_rates AS (
+
+    SELECT
+
+        batting_team,
+
+        AVG(
+            CASE
+                WHEN phase = 'Middle'
+                THEN run_rate
+            END
+        ) AS middle_run_rate,
+
+        AVG(
+            CASE
+                WHEN phase = 'Death'
+                THEN run_rate
+            END
+        ) AS death_run_rate
+
+    FROM team_phase_stats
+
+    GROUP BY batting_team
+
+)
+
+SELECT
+
+    batting_team,
+
+    ROUND(middle_run_rate,2) AS middle_run_rate,
+
+    ROUND(death_run_rate,2) AS death_run_rate,
+
+    ROUND(
+        death_run_rate /
+        NULLIF(middle_run_rate,0),
+        2
+    ) AS acceleration_multiplier
+
+FROM phase_run_rates
+
+ORDER BY acceleration_multiplier DESC;

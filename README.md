@@ -139,6 +139,22 @@ Example:
 ---
 
 # Advanced Analytics Implemented
+
+## Death Overs Scoring Multiplier
+
+Measures how effectively teams increase their scoring rate during the death overs compared to the middle overs.
+
+**Metric**
+
+Death Overs Scoring Multiplier =
+Average Death Overs Run Rate ÷ Average Middle Overs Run Rate
+
+### Finding
+
+- Lucknow Super Giants recorded the highest acceleration.
+- Their scoring rate increased by **1.33×** during the death overs.
+
+
 ## Powerplay Advantage vs Match Outcome
 
 A custom team-level analysis measuring whether winning the Powerplay
