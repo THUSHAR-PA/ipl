@@ -299,3 +299,46 @@ SELECT
 FROM phase_run_rates
 
 ORDER BY acceleration_multiplier DESC;
+
+
+/*=========================================================
+Insight 3 : Team Batting Distribution
+=========================================================*/
+
+/*
+Business Question:
+How are a team's runs distributed across the batting order?
+
+Batting groups:
+
+Top Order    : Positions 1-3
+
+Middle Order : Positions 4-5
+
+Finishers    : Positions 6+
+
+Finding:
+
+• Gujarat Titans were the most top-order dependent team,
+  with 66.20% of their runs coming from the top three batters.
+
+• Punjab Kings received the highest middle-order contribution,
+  with 31.40% of runs coming from positions 4-5.
+
+• Chennai Super Kings received the highest finisher contribution,
+  with 25.10% of runs coming from batters at position 6 or below.
+*/
+
+SELECT
+
+    batting_team,
+
+    top_order_pct,
+
+    middle_order_pct,
+
+    finisher_pct
+
+FROM team_batting_distribution
+
+ORDER BY top_order_pct DESC;

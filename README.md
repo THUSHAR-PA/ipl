@@ -139,6 +139,23 @@ Example:
 ---
 
 # Advanced Analytics Implemented
+## Team Batting Distribution
+
+Analyzed how each team's total runs were distributed across different batting roles.
+
+Batting roles:
+
+- **Top Order:** Positions 1–3
+- **Middle Order:** Positions 4–5
+- **Finishers:** Positions 6+
+
+### Key Findings
+
+- **Gujarat Titans** recorded the highest Top Order dependency (**66.20%**).
+- **Punjab Kings** recorded the highest Middle Order contribution (**31.40%**).
+- **Chennai Super Kings** recorded the highest Finisher contribution (**25.10%**).
+
+The analysis is powered by a reusable analytical table (`team_batting_distribution`) that summarizes batting contributions by role.
 
 ## Death Overs Scoring Multiplier
 

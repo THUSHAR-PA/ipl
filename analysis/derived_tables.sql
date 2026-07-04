@@ -161,9 +161,8 @@ GROUP BY
     d.batting_team;
 
 
-----------------------------------------------------------
--- TEAM PHASE STATS
-----------------------------------------------------------
+
+--Team_Phase_Stats
 
 CREATE TABLE team_phase_stats (
 
@@ -181,9 +180,232 @@ CREATE TABLE team_phase_stats (
 
     run_rate NUMERIC(5,2),
 
-    boundary_percentage NUMERIC(5,2),
-
-    dot_balls INTEGER,
-
-    boundaries INTEGER
+    boundary_percentage NUMERIC(5,2)
 );
+
+--insert into team_phase_stats table
+INSERT INTO team_phase_stats
+(
+    match_id,
+    batting_team,
+    phase,
+    runs,
+    wickets_lost,
+    balls,
+    run_rate,
+    boundary_percentage,
+    dot_balls,
+    boundaries
+)
+
+SELECT
+
+    match_id,
+
+    batting_team,
+
+    phase,
+
+    SUM(total_runs) AS runs,
+
+    COUNT(*) FILTER (
+        WHERE wicket = TRUE
+    ) AS wickets_lost,
+
+    COUNT(*) AS balls,
+
+    ROUND(
+        SUM(total_runs) * 6.0 / COUNT(*),
+        2
+    ) AS run_rate,
+
+    ROUND(
+        COUNT(*) FILTER (
+            WHERE is_boundary = TRUE
+        ) * 100.0 / COUNT(*),
+        2
+    ) AS boundary_percentage,
+
+    COUNT(*) FILTER (
+        WHERE total_runs = 0
+    ) AS dot_balls,
+
+    COUNT(*) FILTER (
+        WHERE is_boundary = TRUE
+    ) AS boundaries
+
+FROM deliveries
+
+WHERE inning_no IN (1,2)
+
+GROUP BY
+    match_id,
+    batting_team,
+    phase
+
+ORDER BY
+    match_id,
+    batting_team,
+    phase;
+
+
+    --TEAM BATTING DISTRIBUTION--
+
+    CREATE TABLE team_batting_distribution (
+
+    batting_team TEXT PRIMARY KEY,
+
+    top_order_runs INTEGER,
+
+    middle_order_runs INTEGER,
+
+    finisher_runs INTEGER,
+
+    total_runs INTEGER,
+
+    top_order_pct NUMERIC(5,2),
+
+    middle_order_pct NUMERIC(5,2),
+
+    finisher_pct NUMERIC(5,2)
+
+);
+
+--INSERTING INTO TEAM BATTING DISTRIBUTION TABLE--
+
+INSERT INTO team_batting_distribution (
+
+    batting_team,
+
+    top_order_runs,
+
+    middle_order_runs,
+
+    finisher_runs,
+
+    total_runs,
+
+    top_order_pct,
+
+    middle_order_pct,
+
+    finisher_pct
+
+)
+
+WITH batting_runs AS (
+
+    SELECT
+
+        d.batting_team,
+
+        bp.batting_position,
+
+        SUM(d.batter_runs) AS runs
+
+    FROM deliveries d
+
+    JOIN batting_positions bp
+
+      ON d.match_id = bp.match_id
+     AND d.inning_no = bp.inning_no
+     AND d.batter = bp.batter
+
+    GROUP BY
+
+        d.batting_team,
+
+        bp.batting_position
+
+),
+
+team_totals AS (
+
+    SELECT
+
+        batting_team,
+
+        SUM(runs) AS total_runs
+
+    FROM batting_runs
+
+    GROUP BY batting_team
+
+)
+
+SELECT
+
+    br.batting_team,
+
+    SUM(
+        CASE
+            WHEN batting_position <= 3
+            THEN runs
+            ELSE 0
+        END
+    ) AS top_order_runs,
+
+    SUM(
+        CASE
+            WHEN batting_position BETWEEN 4 AND 5
+            THEN runs
+            ELSE 0
+        END
+    ) AS middle_order_runs,
+
+    SUM(
+        CASE
+            WHEN batting_position >= 6
+            THEN runs
+            ELSE 0
+        END
+    ) AS finisher_runs,
+
+    tt.total_runs,
+
+    ROUND(
+        SUM(
+            CASE
+                WHEN batting_position <= 3
+                THEN runs
+                ELSE 0
+            END
+        ) * 100.0 / tt.total_runs,
+        2
+    ) AS top_order_pct,
+
+    ROUND(
+        SUM(
+            CASE
+                WHEN batting_position BETWEEN 4 AND 5
+                THEN runs
+                ELSE 0
+            END
+        ) * 100.0 / tt.total_runs,
+        2
+    ) AS middle_order_pct,
+
+    ROUND(
+        SUM(
+            CASE
+                WHEN batting_position >= 6
+                THEN runs
+                ELSE 0
+            END
+        ) * 100.0 / tt.total_runs,
+        2
+    ) AS finisher_pct
+
+FROM batting_runs br
+
+JOIN team_totals tt
+
+ON br.batting_team = tt.batting_team
+
+GROUP BY
+
+    br.batting_team,
+
+    tt.total_runs
+
+ORDER BY batting_team;
