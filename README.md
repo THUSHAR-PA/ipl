@@ -139,6 +139,24 @@ Example:
 ---
 
 # Advanced Analytics Implemented
+## Dot Ball Battle vs Match Outcome
+
+Evaluated whether teams that handled dot-ball pressure better were more likely to win.
+
+**Method**
+
+- Calculated the dot-ball percentage for each team in every match.
+- Compared both teams in the same match.
+- The team with the lower dot-ball percentage was considered the winner of the dot-ball battle.
+
+### Finding
+
+Teams winning the dot-ball battle won
+
+**58 of 72 completed matches (80.56%)**.
+
+This suggests that minimizing dot balls while batting is one of the strongest indicators of match success in IPL 2026.
+
 ## Team Batting Distribution
 
 Analyzed how each team's total runs were distributed across different batting roles.

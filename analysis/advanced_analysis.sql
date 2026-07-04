@@ -342,3 +342,236 @@ SELECT
 FROM team_batting_distribution
 
 ORDER BY top_order_pct DESC;
+
+
+
+/*=========================================================
+Insight 4 : Dot Ball Battle vs Match Outcome
+=========================================================*/
+
+/*
+Business Question:
+Does winning the dot-ball battle increase the chances of
+winning an IPL match?
+
+Definition:
+Dot Ball Percentage =
+(Dot Balls Faced / Total Balls Faced) × 100
+
+The team with the LOWER dot-ball percentage is considered
+to have won the dot-ball battle.
+
+Finding:
+
+Teams winning the dot-ball battle won
+58 of 72 completed matches
+(80.56%).
+*/
+
+
+/*---------------------------------------------------------
+Match-wise Analysis
+---------------------------------------------------------*/
+
+WITH team_dot_ball_stats AS (
+
+    SELECT
+
+        match_id,
+
+        batting_team,
+
+        COUNT(*) AS balls_faced,
+
+        COUNT(*) FILTER (
+            WHERE total_runs = 0
+        ) AS dot_balls,
+
+        ROUND(
+
+            COUNT(*) FILTER (
+                WHERE total_runs = 0
+            ) * 100.0
+
+            /
+
+            COUNT(*),
+
+            2
+
+        ) AS dot_ball_pct
+
+    FROM deliveries
+
+    GROUP BY
+
+        match_id,
+
+        batting_team
+
+),
+
+dot_ball_winner AS (
+
+    SELECT
+
+        a.match_id,
+
+        a.batting_team AS better_team,
+
+        a.dot_ball_pct,
+
+        b.batting_team AS opponent,
+
+        b.dot_ball_pct AS opponent_dot_ball_pct
+
+    FROM team_dot_ball_stats a
+
+    JOIN team_dot_ball_stats b
+
+      ON a.match_id = b.match_id
+
+     AND a.batting_team <> b.batting_team
+
+    WHERE
+
+        a.dot_ball_pct < b.dot_ball_pct
+
+)
+
+SELECT
+
+    m.match_id,
+
+    better_team,
+
+    dot_ball_pct,
+
+    opponent,
+
+    opponent_dot_ball_pct,
+
+    m.winner,
+
+    CASE
+
+        WHEN better_team = m.winner
+
+        THEN 'Won Match'
+
+        ELSE 'Lost Match'
+
+    END AS outcome
+
+FROM dot_ball_winner d
+
+JOIN matches m
+
+ON d.match_id = m.match_id
+
+WHERE m.winner IS NOT NULL
+
+ORDER BY match_id;
+
+
+/*---------------------------------------------------------
+Summary Statistics
+---------------------------------------------------------*/
+
+WITH team_dot_ball_stats AS (
+
+    SELECT
+
+        match_id,
+
+        batting_team,
+
+        ROUND(
+
+            COUNT(*) FILTER (
+                WHERE total_runs = 0
+            ) * 100.0
+
+            /
+
+            COUNT(*),
+
+            2
+
+        ) AS dot_ball_pct
+
+    FROM deliveries
+
+    GROUP BY
+
+        match_id,
+
+        batting_team
+
+),
+
+dot_ball_winner AS (
+
+    SELECT
+
+        a.match_id,
+
+        a.batting_team AS better_team
+
+    FROM team_dot_ball_stats a
+
+    JOIN team_dot_ball_stats b
+
+      ON a.match_id = b.match_id
+
+     AND a.batting_team <> b.batting_team
+
+    WHERE
+
+        a.dot_ball_pct < b.dot_ball_pct
+
+),
+
+results AS (
+
+    SELECT
+
+        m.match_id,
+
+        CASE
+
+            WHEN d.better_team = m.winner
+
+            THEN 1
+
+            ELSE 0
+
+        END AS successful_prediction
+
+    FROM dot_ball_winner d
+
+    JOIN matches m
+
+      ON d.match_id = m.match_id
+
+    WHERE m.winner IS NOT NULL
+
+)
+
+SELECT
+
+    COUNT(*) AS matches,
+
+    SUM(successful_prediction) AS successful_predictions,
+
+    COUNT(*) - SUM(successful_prediction) AS unsuccessful_predictions,
+
+    ROUND(
+
+        AVG(successful_prediction) * 100,
+
+        2
+
+    ) AS success_percentage
+
+FROM results;
